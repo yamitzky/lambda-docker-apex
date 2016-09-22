@@ -1,0 +1,21 @@
+version: '2'
+services:
+  lambda:
+    build: .
+    volumes:
+    - ./:/usr/src/app
+    links:
+    - mock:mock
+    - db:db
+
+  db:
+    image: peopleperhour/dynamodb:latest
+    restart: always
+
+  mock:
+    image: yamitzky/easymock
+    volumes:
+    - ./mock:/data
+    entrypoint: ["easymock", "-p", "80"]
+    ports:
+    - "3000:80"
